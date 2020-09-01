@@ -3,6 +3,7 @@ package ua.xet.ConferenceApp.entity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -36,5 +37,6 @@ public class User {
     private boolean credentialsNonExpired;
     @Column(name = "enabled",nullable = false)
     private boolean enabled;
-
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "userId")
+    private Set<Conference> conferences;
 }

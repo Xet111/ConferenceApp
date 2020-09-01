@@ -8,16 +8,42 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import ua.xet.ConferenceApp.config.EncryptionConfig;
 import ua.xet.ConferenceApp.dto.UserDTO;
+import ua.xet.ConferenceApp.entity.User;
 import ua.xet.ConferenceApp.repository.UserRepository;
+
+import javax.annotation.PostConstruct;
+import java.util.Optional;
 
 @Service
 public class UserService implements UserDetailsService {
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private EncryptionConfig encryptionConfig;
+
+    public Optional<User> findByUsername(String username){
+        return userRepository.findByUsername(username);
+    }
+
+    @PostConstruct
+    public void init(){
+        userRepository.findByUsername("user").ifPresent(user -> {
+            user.setPassword(encryptionConfig.getPasswordEncoder().encode("123"));
+            userRepository.save(user);
+        });
+
+        userRepository.findByUsername("admin").ifPresent(user -> {
+            user.setPassword(encryptionConfig.getPasswordEncoder().encode("123"));
+            userRepository.save(user);
+        });
+
+
+    }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-        return null;
+        return new UserDTO(userRepository.findByUsername(username).orElseThrow(() ->
+               new  UsernameNotFoundException("user"+username+"was not found")));
     }
 }

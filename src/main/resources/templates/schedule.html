@@ -13,11 +13,18 @@
     &nbsp;|&nbsp;
     <a href="/stat">Statistics</a>
 </div>
+<table border="1" >
+    <tr>
+        <th>ID</th>
+        <th>name</th>
+    </tr>
 
+    <tr th:each="conf : ${conferences}">
+        <td   th:text="${conf.confId}">..</td>
+        <td ><a th:href = "@{/conference}"  th:text="${conf.name}"></a></td>
+    </tr>
 
-<h2 th:text="${username}"></h2>
-<h3 th:text="${role}"></h3>
-
+</table>
 
 </body>
 </html>
