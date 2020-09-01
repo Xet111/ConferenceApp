@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>ConfRequests</title>
+</head>
+<body>
+<div style="text-align: right;padding:5px;margin:5px 0px;background:#ccc;">
+    <a href="/schedule">Schedule</a>
+    &nbsp;|&nbsp;
+    <a href="/index">Index</a>
+    &nbsp;|&nbsp;
+    <a href="/stat">Statistics</a>
+</div>
+<table border="1" >
+    <tr>
+        <th>ID</th>
+        <th>name</th>
+    </tr>
+
+    <tr th:each="conf : ${conferences}">
+        <td   th:text="${conf.confId}">..</td>
+        <td ><a th:href = "@{/conference}"  th:text="${conf.name}"></a></td>
+        <td th:text="${conf.active}"></td>
+
+    </tr>
+
+</table>
+</body>
+</html>

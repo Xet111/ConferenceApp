@@ -24,6 +24,6 @@ public class Conference {
     private String name;
   //  @Column(name = "amount_users")
    // private int amountUsers;
-    @Column(name = "conf_confirmed",nullable = false)
-    private boolean confConfirmed;
+    @Column(name = "active",nullable = false)
+    private boolean active;
 }

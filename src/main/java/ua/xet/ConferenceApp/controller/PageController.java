@@ -10,6 +10,8 @@ import ua.xet.ConferenceApp.dto.UserDTO;
 import ua.xet.ConferenceApp.repository.ConferenceRepository;
 import ua.xet.ConferenceApp.repository.UserRepository;
 
+import java.util.stream.Collectors;
+
 @Controller
 public class PageController {
 
@@ -31,7 +33,7 @@ public class PageController {
     }
     @RequestMapping(value = {"/schedule"})
     public String schedulePage(Model model){
-        model.addAttribute("conferences",conferenceRepository.findAll());
+        model.addAttribute("conferences",conferenceRepository.findByActiveTrue().stream().collect(Collectors.toList()));
         return "schedule";
     }
 
@@ -39,9 +41,6 @@ public class PageController {
     public String conferencePage(Model model){
         return "conference";
     }
-    @RequestMapping(value = {"/stat"})
-    public String statisticsPage(){
-        return "statistics";
-    }
+
 
 }

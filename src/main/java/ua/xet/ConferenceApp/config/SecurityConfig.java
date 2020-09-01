@@ -11,7 +11,6 @@ import ua.xet.ConferenceApp.service.UserService;
 
 @Configuration
 @EnableWebSecurity
-@Order(1)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private UserService userService;
@@ -29,6 +28,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
+                .antMatchers("/stat/*").hasRole("ADMIN")
+                .antMatchers("/conference", "/schedule").hasAnyRole("USER", "ADMIN")
                 .antMatchers("/index").permitAll()
                 .anyRequest().authenticated()
                 .and().formLogin().permitAll()

@@ -14,8 +14,8 @@ import java.util.Optional;
 public class ConferenceService {
     @Autowired
     private ConferenceRepository confRepo;
-    public Optional<Conference>findByConfirmed(boolean confirmed){
-        return confRepo.findByConfConfirmed(confirmed);
+    public Optional<Conference>findByConfirmed(){
+        return confRepo.findByActiveTrue();
     }
 
 }

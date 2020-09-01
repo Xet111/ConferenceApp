@@ -9,5 +9,5 @@ import java.util.Optional;
 @Repository
 public interface ConferenceRepository extends JpaRepository<Conference,Long> {
     public Optional<Conference>findByName(String name);
-    public Optional<Conference>findByConfConfirmed(boolean confConfirmed);
+    public Optional<Conference>findByActiveTrue();
 }
