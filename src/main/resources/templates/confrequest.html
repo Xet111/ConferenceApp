@@ -1,8 +1,9 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>ConfRequests</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
 </head>
 <body>
 <div style="text-align: right;padding:5px;margin:5px 0px;background:#ccc;">
@@ -12,19 +13,31 @@
     &nbsp;|&nbsp;
     <a href="/stat">Statistics</a>
 </div>
-<table border="1" >
-    <tr>
-        <th>ID</th>
-        <th>name</th>
+<table border="1" class="table table-striped" >
+    <tr  scope="row">
+        <th scope="col">ID</th>
+        <th scope="col">name</th>
+        <th scope="col">active</th>
+        <th scope="col">activate</th>
+        <th scope="col">delete</th>
     </tr>
 
-    <tr th:each="conf : ${conferences}">
+    <tr th:each="conf : ${conferences}" scope="row">
         <td   th:text="${conf.confId}">..</td>
         <td ><a th:href = "@{/conference}"  th:text="${conf.name}"></a></td>
         <td th:text="${conf.active}"></td>
 
+        <td>
+    <form  th:action="@{/stat/confrequests/{id}/activate(id=${conf.confId})}" action="#" formtarget="/stat/confrequests"  th:method="post" role="form">
+        <button type="submit">Set active</button>
+    </form>
+        </td>
+        <td>
+            <form  th:action="@{/stat/confrequests/{id}/delete(id=${conf.confId})}"  th:method="post">
+                <button type="submit">Delete</button>
+            </form>
+        </td>
     </tr>
-
 </table>
 </body>
 </html>

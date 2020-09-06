@@ -17,7 +17,7 @@ public class Conference {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "conf_id",nullable = false)
     private long confId;
-    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id",nullable = false)
     private User userId;
     @Column(nullable = false)
