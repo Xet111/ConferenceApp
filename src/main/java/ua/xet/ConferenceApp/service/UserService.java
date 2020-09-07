@@ -8,6 +8,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import ua.xet.ConferenceApp.config.EncryptionConfig;
 import ua.xet.ConferenceApp.dto.UserDTO;
+import ua.xet.ConferenceApp.entity.RoleType;
 import ua.xet.ConferenceApp.entity.User;
 import ua.xet.ConferenceApp.repository.UserRepository;
 
@@ -48,6 +49,12 @@ public class UserService implements UserDetailsService {
     }
 
     public void addNewUser(User user){
+        user.setPassword(encryptionConfig.getPasswordEncoder().encode(user.getPassword()));
+        user.setAccountNonExpired(true);
+        user.setAccountNonLocked(true);
+        user.setCredentialsNonExpired(true);
+        user.setEnabled(true);
+        user.setRole(RoleType.ROLE_USER);
         userRepository.save(user);
     }
 }

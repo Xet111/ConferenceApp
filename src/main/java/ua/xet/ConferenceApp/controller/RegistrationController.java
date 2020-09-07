@@ -25,9 +25,10 @@ public class RegistrationController {
     }
 
     @PostMapping("/add")
-    public void userRegistration(Model model, @ModelAttribute User user){
+    public String userRegistration(Model model, @ModelAttribute User user){
         model.addAttribute("user", user);
         addNewUser(user);
+        return "activated";
     }
 
 

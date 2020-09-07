@@ -28,7 +28,7 @@ public class PageController {
     @Autowired
     ConferenceService conferenceService;
 
-    @RequestMapping(value = {"/","/index"})
+    @RequestMapping(value = {"/index"})
     public String mainPage(Model model){
         Authentication authentication = SecurityContextHolder
                 .getContext()
@@ -48,6 +48,11 @@ public class PageController {
     @RequestMapping(value = {"/conference"})
     public String conferencePage(Model model){
         return "conference";
+    }
+
+    @RequestMapping(value = {"/", "/home"})
+    public String homePage(){
+        return "home";
     }
 
 
