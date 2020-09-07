@@ -50,12 +50,7 @@ public class PageController {
         return "conference";
     }
 
-    @GetMapping("/registration")
-    public String registration(Model model, WebRequest request){
-        UserDTO userDTO = new UserDTO();
-        model.addAttribute("user", userDTO);
-        return "registration";
-    }
+
     private List<Conference> findByActive(){
         List<Conference> conferences = new ArrayList<>();
         conferences.addAll(conferenceService.findByConfirmed());

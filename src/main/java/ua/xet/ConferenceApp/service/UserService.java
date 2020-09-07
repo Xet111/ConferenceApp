@@ -46,4 +46,8 @@ public class UserService implements UserDetailsService {
         return new UserDTO(userRepository.findByUsername(username).orElseThrow(() ->
                new  UsernameNotFoundException("user"+username+"was not found")));
     }
+
+    public void addNewUser(User user){
+        userRepository.save(user);
+    }
 }
