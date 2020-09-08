@@ -25,15 +25,15 @@ public class RegistrationController {
     }
 
     @PostMapping("/add")
-    public String userRegistration(Model model, @ModelAttribute User user){
+    public String userRegistration(Model model, @ModelAttribute User user) throws Exception {
         model.addAttribute("user", user);
         addNewUser(user);
-        return "activated";
+        return "redirect:/login";
     }
 
 
 
-    private void addNewUser(User user){
+    private void addNewUser(User user) throws Exception {
         userService.addNewUser(user);
     }
 

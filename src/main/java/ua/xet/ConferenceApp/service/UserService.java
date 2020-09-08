@@ -7,6 +7,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import ua.xet.ConferenceApp.config.EncryptionConfig;
+import ua.xet.ConferenceApp.config.LocalPasswordEncoder;
+import ua.xet.ConferenceApp.controller.RegistrationValidation;
 import ua.xet.ConferenceApp.dto.UserDTO;
 import ua.xet.ConferenceApp.entity.RoleType;
 import ua.xet.ConferenceApp.entity.User;
@@ -14,13 +16,14 @@ import ua.xet.ConferenceApp.repository.UserRepository;
 
 import javax.annotation.PostConstruct;
 import java.util.Optional;
+import java.util.regex.Matcher;
 
 @Service
 public class UserService implements UserDetailsService {
     @Autowired
     private UserRepository userRepository;
     @Autowired
-    private EncryptionConfig encryptionConfig;
+    private LocalPasswordEncoder localPasswordEncoder;
 
     public Optional<User> findByUsername(String username){
         return userRepository.findByUsername(username);
@@ -29,12 +32,12 @@ public class UserService implements UserDetailsService {
     @PostConstruct
     public void init(){
         userRepository.findByUsername("user").ifPresent(user -> {
-            user.setPassword(encryptionConfig.getPasswordEncoder().encode("123"));
+            user.setPassword(localPasswordEncoder.encode("123"));
             userRepository.save(user);
         });
 
         userRepository.findByUsername("admin").ifPresent(user -> {
-            user.setPassword(encryptionConfig.getPasswordEncoder().encode("123"));
+            user.setPassword(localPasswordEncoder.encode("123"));
             userRepository.save(user);
         });
 
@@ -48,13 +51,30 @@ public class UserService implements UserDetailsService {
                new  UsernameNotFoundException("user"+username+"was not found")));
     }
 
-    public void addNewUser(User user){
-        user.setPassword(encryptionConfig.getPasswordEncoder().encode(user.getPassword()));
-        user.setAccountNonExpired(true);
-        user.setAccountNonLocked(true);
-        user.setCredentialsNonExpired(true);
-        user.setEnabled(true);
-        user.setRole(RoleType.ROLE_USER);
-        userRepository.save(user);
+    public void addNewUser(User user) throws Exception{
+        saveUser(buildUser(user));
+    }
+
+    private void saveUser(User user) throws Exception{
+        try{
+            userRepository.save(user);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+
+    }
+    private User buildUser(User user){
+        return user.builder()
+                .username(user.getUsername())
+                .password(localPasswordEncoder.encode(user.getPassword()))
+                .firstName(user.getFirstName())
+                .lastName(user.getLastName())
+                .accountNonExpired(true)
+                .accountNonLocked(true)
+                .credentialsNonExpired(true)
+                .enabled(true)
+                .role(RoleType.ROLE_USER)
+                .build();
     }
 }

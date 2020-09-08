@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+</head>
+<body>
+<h1 >form</h1>
+<form th:action="@{/conf/add}" th:object="${conference}" method="POST" enctype="utf8">
+    <div class="form-group">
+        <label >name</label>
+        <input type="text" th:field="*{name}"/></p>
+    </div>
+    <button type="submit" >submit</button>
+
+</form>
+</body>
+</html>

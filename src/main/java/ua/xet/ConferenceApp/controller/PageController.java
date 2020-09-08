@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.context.request.WebRequest;
 import ua.xet.ConferenceApp.dto.UserDTO;
 import ua.xet.ConferenceApp.entity.Conference;
+import ua.xet.ConferenceApp.entity.User;
 import ua.xet.ConferenceApp.repository.ConferenceRepository;
 import ua.xet.ConferenceApp.repository.UserRepository;
 import ua.xet.ConferenceApp.service.ConferenceService;
@@ -42,6 +43,7 @@ public class PageController {
     @RequestMapping(value = {"/schedule"})
     public String schedulePage(Model model){
         model.addAttribute("conferences", findByActive());
+        model.addAttribute("users", getCreator(findByActive()));
         return "schedule";
     }
 
@@ -62,5 +64,8 @@ public class PageController {
         return conferences;
     }
 
+    private List<User> getCreator(List<Conference> conferences){
+        return conferenceService.getCreator(conferences);
+    }
 
 }

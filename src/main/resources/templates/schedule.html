@@ -16,13 +16,13 @@
 </div>
 <table border="1" class="table table-striped">
     <tr>
-        <th scope="col">ID</th>
         <th scope="col">name</th>
+        <th scope="col">Creator</th>
     </tr>
 
-    <tr th:each="conf : ${conferences}" scope="row">
-        <td   th:text="${conf.confId}">..</td>
+    <tr th:each="conf : ${conferences}"  scope="row">
         <td ><a th:href = "@{/conference}"  th:text="${conf.name}"></a></td>
+        <td   th:text="${conf.userId.username}"></td>
     </tr>
 
 </table>
