@@ -18,6 +18,8 @@
         <th scope="col">ID</th>
         <th scope="col">name</th>
         <th scope="col">active</th>
+        <th scope="col">Time of creation</th>
+        <th scope="col">Time of beginning</th>
         <th scope="col">activate</th>
         <th scope="col">delete</th>
     </tr>
@@ -26,6 +28,8 @@
         <td   th:text="${conf.confId}">..</td>
         <td ><a th:href = "@{/conference}"  th:text="${conf.name}"></a></td>
         <td th:text="${conf.active}"></td>
+        <td th:text="${conf.dateCreated}"></td>
+        <td th:text="${conf.dateActive}"></td>
 
         <td>
     <form  th:action="@{/stat/confrequests/{id}/activate(id=${conf.confId})}" action="#" formtarget="/stat/confrequests"  th:method="post" role="form">

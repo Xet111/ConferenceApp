@@ -34,7 +34,7 @@ public class ConferenceController {
         UserDTO user = (UserDTO)authentication.getPrincipal();
         model.addAttribute("conference", conference);
         addConference(conference, user.getUser());
-        return "confform";
+        return "index";
     }
 
     private void addConference(Conference conference, User user) throws Exception {

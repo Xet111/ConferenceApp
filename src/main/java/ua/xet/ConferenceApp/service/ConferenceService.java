@@ -10,6 +10,7 @@ import ua.xet.ConferenceApp.repository.ConferenceRepository;
 import ua.xet.ConferenceApp.repository.UserRepository;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -58,6 +59,8 @@ public class ConferenceService {
                 .name(conference.getName())
                 .userId(user)
                 .active(false)
+                .dateCreated(new Date())
+                .dateActive(conference.getDateActive())
                 .build();
     }
 

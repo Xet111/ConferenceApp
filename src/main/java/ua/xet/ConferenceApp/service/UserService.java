@@ -54,6 +54,15 @@ public class UserService implements UserDetailsService {
     public void addNewUser(User user) throws Exception{
         saveUser(buildUser(user));
     }
+    public void setRole(User user, Long id){
+        User user1 = userRepository.getOne(id);
+        user1.setRole(user.getRole());
+        userRepository.save(user1);
+    }
+
+    public void deleteUser(Long id){
+        deleteUserById(id);
+    }
 
     private void saveUser(User user) throws Exception{
         try{
@@ -76,5 +85,13 @@ public class UserService implements UserDetailsService {
                 .enabled(true)
                 .role(RoleType.ROLE_USER)
                 .build();
+    }
+    private void deleteUserById(Long id){
+        try{
+            userRepository.deleteById(id);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
     }
 }

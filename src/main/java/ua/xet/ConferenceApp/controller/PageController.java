@@ -5,8 +5,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
 import ua.xet.ConferenceApp.dto.UserDTO;
 import ua.xet.ConferenceApp.entity.Conference;
@@ -14,6 +13,7 @@ import ua.xet.ConferenceApp.entity.User;
 import ua.xet.ConferenceApp.repository.ConferenceRepository;
 import ua.xet.ConferenceApp.repository.UserRepository;
 import ua.xet.ConferenceApp.service.ConferenceService;
+import ua.xet.ConferenceApp.service.UserService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,21 +23,16 @@ import java.util.stream.Collectors;
 public class PageController {
 
     @Autowired
-    private UserRepository userRepository;
+    private UserService userService;
     @Autowired
     ConferenceRepository conferenceRepository;
     @Autowired
     ConferenceService conferenceService;
+    @Autowired
+    UserRepository userRepository;
 
     @RequestMapping(value = {"/index"})
     public String mainPage(Model model){
-        Authentication authentication = SecurityContextHolder
-                .getContext()
-                .getAuthentication();
-        UserDTO user = (UserDTO)authentication.getPrincipal();
-
-        model.addAttribute("username",user.getUsername());
-        model.addAttribute("role",user.getAuthorities());
         return "index";
     }
     @RequestMapping(value = {"/schedule"})
@@ -57,6 +52,25 @@ public class PageController {
         return "home";
     }
 
+    @RequestMapping("/users")
+    public String usersList(Model model){
+        User user = new User();
+        model.addAttribute("user", user);
+        model.addAttribute("users", userRepository.findAll());
+        return "users";
+    }
+    @PostMapping("/setRole/{id}")
+    public String setUserRole(Model model, @ModelAttribute User user, @PathVariable Long id){
+        model.addAttribute("user", user);
+        setRole(user, id);
+        return "redirect:/users";
+    }
+    @PostMapping("/users/delete/{id}")
+    public String deleteUser(@PathVariable Long id, Model model) {
+        deleteUserById(id);
+        return "redirect:/users";
+    }
+
 
     private List<Conference> findByActive(){
         List<Conference> conferences = new ArrayList<>();
@@ -66,6 +80,13 @@ public class PageController {
 
     private List<User> getCreator(List<Conference> conferences){
         return conferenceService.getCreator(conferences);
+    }
+
+    private void setRole(User user, Long id){
+        userService.setRole(user, id);
+    }
+    private void deleteUserById(Long id){
+        userService.deleteUser(id);
     }
 
 }
