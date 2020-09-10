@@ -46,6 +46,22 @@ public class ConferenceService {
     public void addNewConference(Conference conference, User user) throws Exception{
         addConference(buildConference(conference, user));
     }
+    public Conference getActiveById(Long id)  {
+        try{
+        if(!confRepo.findById(id).get().isActive()) {
+            throw new Exception("Conference must be Active");
+        }
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
+        return confRepo.findById(id).get();
+    }
+
+    public Conference getById(Long id){
+        return confRepo.findById(id).get();
+    }
     private void addConference(Conference conference)throws Exception{
         try{
             confRepo.save(conference);
@@ -61,6 +77,7 @@ public class ConferenceService {
                 .active(false)
                 .dateCreated(new Date())
                 .dateActive(conference.getDateActive())
+                .theme(conference.getTheme())
                 .build();
     }
 

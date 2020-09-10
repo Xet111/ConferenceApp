@@ -17,12 +17,14 @@
 <table border="1" class="table table-striped">
     <tr>
         <th scope="col">name</th>
+        <th scope="col">theme</th>
         <th scope="col">Creator</th>
         <th scope="col">Time of beginning</th>
     </tr>
 
     <tr th:each="conf : ${conferences}"  scope="row">
-        <td ><a th:href = "@{/conference}"  th:text="${conf.name}"></a></td>
+        <td ><a th:href = "@{/conf/conference/{id}(id=${conf.confId})}"  th:text="${conf.name}"></a></td>
+        <td   th:text="${conf.theme}"></td>
         <td   th:text="${conf.userId.username}"></td>
         <td   th:text="${conf.dateActive}"></td>
     </tr>

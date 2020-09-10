@@ -42,11 +42,6 @@ public class PageController {
         return "schedule";
     }
 
-    @RequestMapping(value = {"/conference"})
-    public String conferencePage(Model model){
-        return "conference";
-    }
-
     @RequestMapping(value = {"/", "/home"})
     public String homePage(){
         return "home";

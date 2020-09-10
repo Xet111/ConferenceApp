@@ -35,4 +35,6 @@ public class Conference {
     @Column(name = "date_active",nullable = false)
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     private LocalDateTime dateActive;
+    @Column(name = "theme", nullable = false)
+    private String theme;
 }

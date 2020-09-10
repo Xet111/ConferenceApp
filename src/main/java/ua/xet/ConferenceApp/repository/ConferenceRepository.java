@@ -11,4 +11,5 @@ import java.util.Optional;
 public interface ConferenceRepository extends JpaRepository<Conference,Long> {
     public Optional<Conference>findByName(String name);
     public List<Conference>findByActiveTrue();
+    public Optional<Conference> findById(Long id);
 }
