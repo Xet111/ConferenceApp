@@ -52,7 +52,7 @@ public class ConferenceController {
         }
         else {
             if(LocalDateTime.now().compareTo(findById(id).getDateActive()) >= 0){
-            if(LocalDateTime.now().minusMinutes(30).compareTo(findById(id).getDateActive()) <= 0) {
+            if(LocalDateTime.now().minusMinutes(ConferenceDuration.DURATION_MINUTES).compareTo(findById(id).getDateActive()) <= 0) {
                 model.addAttribute("conference", findActiveById(id));
             }
             else

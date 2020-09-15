@@ -2,13 +2,17 @@ package ua.xet.ConferenceApp.service;
 
 import ch.qos.logback.core.encoder.EchoEncoder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import ua.xet.ConferenceApp.controller.ConferenceDuration;
 import ua.xet.ConferenceApp.dto.ConferenceDTO;
 import ua.xet.ConferenceApp.entity.Conference;
 import ua.xet.ConferenceApp.entity.User;
 import ua.xet.ConferenceApp.repository.ConferenceRepository;
 import ua.xet.ConferenceApp.repository.UserRepository;
 
+import javax.annotation.PostConstruct;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -20,6 +24,20 @@ import java.util.stream.Collectors;
 public class ConferenceService {
     @Autowired
     private ConferenceRepository confRepo;
+
+    @PostConstruct
+    @Scheduled(cron = "0 * * * * *")
+    public void deleteOutdated(){
+        for(Conference conf : confRepo.findAll()){
+            if((LocalDateTime.now()
+                    .minusMinutes(ConferenceDuration.DURATION_MINUTES)
+                    .compareTo(conf.getDateActive()) == 1)){
+                confRepo.delete(conf);
+            }
+        }
+
+    }
+
     public List<Conference> findByConfirmed(){
         return confRepo.findByActiveTrue().stream().collect(Collectors.toList());
     }
@@ -78,6 +96,7 @@ public class ConferenceService {
                 .dateCreated(new Date())
                 .dateActive(conference.getDateActive())
                 .theme(conference.getTheme())
+                .body(conference.getBody())
                 .build();
     }
 

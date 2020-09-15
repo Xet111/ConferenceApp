@@ -23,9 +23,7 @@ import java.util.stream.Collectors;
 public class PageController {
 
     @Autowired
-    private UserService userService;
-    @Autowired
-    ConferenceRepository conferenceRepository;
+    UserService userService;
     @Autowired
     ConferenceService conferenceService;
     @Autowired

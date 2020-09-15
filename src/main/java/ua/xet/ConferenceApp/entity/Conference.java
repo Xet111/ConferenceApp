@@ -37,4 +37,6 @@ public class Conference {
     private LocalDateTime dateActive;
     @Column(name = "theme", nullable = false)
     private String theme;
+    @Column(name = "body", nullable = false)
+    private String body;
 }
