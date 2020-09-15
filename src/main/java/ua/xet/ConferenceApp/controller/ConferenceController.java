@@ -15,6 +15,9 @@ import ua.xet.ConferenceApp.entity.RoleType;
 import ua.xet.ConferenceApp.entity.User;
 import ua.xet.ConferenceApp.service.ConferenceService;
 
+import java.time.LocalDateTime;
+import java.time.Period;
+
 @Controller
 @RequestMapping("/conf")
 public class ConferenceController {
@@ -48,7 +51,13 @@ public class ConferenceController {
          model.addAttribute("conference", findById(id)) ;
         }
         else {
-            model.addAttribute("conference", findActiveById(id));
+            if(LocalDateTime.now().compareTo(findById(id).getDateActive()) >= 0){
+            if(LocalDateTime.now().minusMinutes(30).compareTo(findById(id).getDateActive()) <= 0) {
+                model.addAttribute("conference", findActiveById(id));
+            }
+            else
+                deleteById(id);
+        }
         }
         return "conference";
     }
@@ -61,6 +70,9 @@ public class ConferenceController {
     }
     private Conference findById(Long id){
         return conferenceService.getById(id);
+    }
+    private void deleteById(Long id){
+        conferenceService.deleteConferenceById(id);
     }
 
 }
