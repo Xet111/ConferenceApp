@@ -1,22 +1,19 @@
 package ua.xet.ConferenceApp.service;
 
-import ch.qos.logback.core.encoder.EchoEncoder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import ua.xet.ConferenceApp.controller.ConferenceDuration;
-import ua.xet.ConferenceApp.dto.ConferenceDTO;
+import ua.xet.ConferenceApp.controller.ConferenceConstants;
+import ua.xet.ConferenceApp.dto.UserDTO;
 import ua.xet.ConferenceApp.entity.Conference;
 import ua.xet.ConferenceApp.entity.User;
 import ua.xet.ConferenceApp.repository.ConferenceRepository;
-import ua.xet.ConferenceApp.repository.UserRepository;
 
 import javax.annotation.PostConstruct;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 
@@ -30,8 +27,8 @@ public class ConferenceService {
     public void deleteOutdated(){
         for(Conference conf : confRepo.findAll()){
             if((LocalDateTime.now()
-                    .minusMinutes(ConferenceDuration.DURATION_MINUTES)
-                    .compareTo(conf.getDateActive()) == 1)){
+                    .minusMinutes(ConferenceConstants.DURATION_MINUTES)
+                    .compareTo(conf.getDateActive()) == ConferenceConstants.COMPARE_TRUE)){
                 confRepo.delete(conf);
             }
         }
@@ -87,6 +84,12 @@ public class ConferenceService {
         catch (Exception e){
             e.printStackTrace();
         }
+    }
+
+    public void setConferenceVisitors(Long id, UserDTO user){
+        Conference conference = confRepo.findById(id).get();
+        conference.getUsers().add(user.getUser());
+        confRepo.save(conference);
     }
     private Conference buildConference(Conference conference, User user){
         return conference.builder()

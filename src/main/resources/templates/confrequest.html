@@ -21,6 +21,7 @@
         <th scope="col">active</th>
         <th scope="col">Time of creation</th>
         <th scope="col">Time of beginning</th>
+        <th scope="col">Amount of visitors</th>
         <th scope="col">activate</th>
         <th scope="col">delete</th>
     </tr>
@@ -32,6 +33,7 @@
         <td th:text="${conf.active}"></td>
         <td th:text="${conf.dateCreated}"></td>
         <td th:text="${conf.dateActive}"></td>
+        <td th:text="${conf.users.size()}"></td>
 
         <td>
     <form  th:action="@{/stat/confrequests/{id}/activate(id=${conf.confId})}" action="#" formtarget="/stat/confrequests"  th:method="post" role="form">

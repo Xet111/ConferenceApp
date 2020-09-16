@@ -39,4 +39,11 @@ public class User {
     private boolean enabled;
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "userId")
     private Set<Conference> conferences;
+    @ManyToMany( fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "statistics",
+            joinColumns = @JoinColumn(name ="users_id"),
+            inverseJoinColumns = @JoinColumn(name = "conf_id")
+    )
+    private Set<Conference> conferencesStats;
 }

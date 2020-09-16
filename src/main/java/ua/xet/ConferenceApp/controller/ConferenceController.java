@@ -16,7 +16,6 @@ import ua.xet.ConferenceApp.entity.User;
 import ua.xet.ConferenceApp.service.ConferenceService;
 
 import java.time.LocalDateTime;
-import java.time.Period;
 
 @Controller
 @RequestMapping("/conf")
@@ -47,13 +46,15 @@ public class ConferenceController {
                 .getContext()
                 .getAuthentication();
         UserDTO user = (UserDTO)authentication.getPrincipal();
+
         if(user.getUser().getRole().equals(RoleType.ROLE_ADMIN)){
          model.addAttribute("conference", findById(id)) ;
         }
         else {
-            if(LocalDateTime.now().compareTo(findById(id).getDateActive()) >= 0){
-            if(LocalDateTime.now().minusMinutes(ConferenceDuration.DURATION_MINUTES).compareTo(findById(id).getDateActive()) <= 0) {
+            if(LocalDateTime.now().compareTo(findById(id).getDateActive()) >= ConferenceConstants.COMPARE_EQUALS){
+            if(LocalDateTime.now().minusMinutes(ConferenceConstants.DURATION_MINUTES).compareTo(findById(id).getDateActive()) <= ConferenceConstants.COMPARE_EQUALS) {
                 model.addAttribute("conference", findActiveById(id));
+                setConferenceVisitors(id, user);
             }
             else
                 deleteById(id);
@@ -73,6 +74,9 @@ public class ConferenceController {
     }
     private void deleteById(Long id){
         conferenceService.deleteConferenceById(id);
+    }
+    private void setConferenceVisitors(Long id, UserDTO user){
+        conferenceService.setConferenceVisitors(id, user);
     }
 
 }

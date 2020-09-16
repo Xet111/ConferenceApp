@@ -6,6 +6,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -39,4 +40,11 @@ public class Conference {
     private String theme;
     @Column(name = "body", nullable = false)
     private String body;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "statistics",
+            joinColumns = @JoinColumn(name ="conf_id"),
+            inverseJoinColumns = @JoinColumn(name = "users_id")
+    )
+    private Set<User> users;
 }
