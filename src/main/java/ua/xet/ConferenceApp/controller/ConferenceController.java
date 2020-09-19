@@ -32,21 +32,14 @@ public class ConferenceController {
     }
     @PostMapping("/add")
     public String confAdd(Model model, @ModelAttribute Conference conference) throws Exception {
-        Authentication authentication = SecurityContextHolder
-                .getContext()
-                .getAuthentication();
-        UserDTO user = (UserDTO)authentication.getPrincipal();
+        UserDTO user = getUserDTO();
         model.addAttribute("conference", conference);
         addConference(conference, user.getUser());
         return "index";
     }
     @RequestMapping("/conference/{id}")
     public String conferencePage(@PathVariable Long id, Model model){
-        Authentication authentication = SecurityContextHolder
-                .getContext()
-                .getAuthentication();
-        UserDTO user = (UserDTO)authentication.getPrincipal();
-
+        UserDTO user = getUserDTO();
         if(user.getUser().getRole().equals(RoleType.ROLE_ADMIN)){
          model.addAttribute("conference", findById(id)) ;
         }
@@ -77,6 +70,13 @@ public class ConferenceController {
     }
     private void setConferenceVisitors(Long id, UserDTO user){
         conferenceService.setConferenceVisitors(id, user);
+    }
+    private UserDTO getUserDTO(){
+        Authentication authentication = SecurityContextHolder
+                .getContext()
+                .getAuthentication();
+        UserDTO user = (UserDTO)authentication.getPrincipal();
+        return user;
     }
 
 }

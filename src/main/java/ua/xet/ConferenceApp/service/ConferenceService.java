@@ -36,7 +36,7 @@ public class ConferenceService {
     }
 
     public List<Conference> findByConfirmed(){
-        return confRepo.findByActiveTrue().stream().collect(Collectors.toList());
+        return new ArrayList<>(confRepo.findByActiveTrue());
     }
 
     public void activateConferenceById(Long id, Conference conference){
